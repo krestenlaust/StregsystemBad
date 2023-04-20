@@ -1,10 +1,12 @@
-﻿using Stregsystem.Core.DataProviders;
-using Stregsystem.Core.DTO;
+﻿using Stregsystem.Core.Providers;
+using Stregsystem.Core.DTOs;
+using Stregsystem.Core.DataProviders;
+using Stregsystem.Core.Validator;
 
 namespace Stregsystem.Core
 {
     /// <summary>
-    /// God object as specified by assignment. It does everything and nothing at once.
+    /// God object as specified by assignment. It does everything at once.
     /// </summary>
     public class Stregsystem : IUserProvider, IProductProvider, ITransactionProvider
     {
@@ -13,7 +15,22 @@ namespace Stregsystem.Core
         /// </summary>
         readonly HashSet<Transaction> transactions = new HashSet<Transaction>();
 
-        public IEnumerable<Product> ActiveProducts => throw new NotImplementedException();
+        readonly IUserDataProvider userDataProvider;
+        readonly IProductDataProvider productDataProvider;
+        readonly IEmailValidator emailValidator;
+        readonly INameValidator nameValidator;
+        readonly IUsernameValidator usernameValidator;
+
+        internal Stregsystem(IUserDataProvider userDataProvider, IProductDataProvider productDataProvider, IEmailValidator emailValidator, INameValidator nameValidator, IUsernameValidator usernameValidator)
+        {
+            this.userDataProvider = userDataProvider;
+            this.productDataProvider = productDataProvider;
+            this.emailValidator = emailValidator;
+            this.nameValidator = nameValidator;
+            this.usernameValidator = usernameValidator;
+        }
+
+        IEnumerable<Product> IProductProvider.ActiveProducts => throw new NotImplementedException();
 
         public void BuyProduct(User user, Product product)
         {
@@ -31,28 +48,22 @@ namespace Stregsystem.Core
             transactions.Add(transaction);
         }
 
-        public Product GetProductByID(int ID)
+        Product IProductProvider.GetProductByID(int ID)
         {
-            throw new NotImplementedException();
+            return productDataProvider.GetProducts().First(p => p.ID == ID);
         }
 
-        public User GetUserByUsername(string username)
+        User IUserProvider.GetUserByUsername(string username)
         {
-            throw new NotImplementedException();
-
+            return userDataProvider.GetUsers().First(u => u.Username == username);
         }
 
-        public IList<Transaction> GetTransactions(User user, int count)
+        IEnumerable<User> IUserProvider.GetUsers(Func<User, bool> predicate)
         {
-            throw new NotImplementedException();
+            return userDataProvider.GetUsers().Where(predicate);
         }
 
-        public User GetUsers(Func<User, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Transaction> GetTransactionsByUser(User user, int rows)
+        IEnumerable<Transaction> ITransactionProvider.GetTransactionsByUser(User user, int rows)
         {
             throw new NotImplementedException();
         }

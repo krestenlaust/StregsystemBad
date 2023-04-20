@@ -1,6 +1,6 @@
-﻿using Stregsystem.Core.DTO;
+﻿using Stregsystem.Core.DTOs;
 
-namespace Stregsystem.Core.DataProviders
+namespace Stregsystem.Core.Providers
 {
     public interface ITransactionProvider
     {

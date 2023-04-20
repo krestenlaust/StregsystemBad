@@ -1,4 +1,4 @@
-﻿using Stregsystem.Core.DTO;
+﻿using Stregsystem.Core.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

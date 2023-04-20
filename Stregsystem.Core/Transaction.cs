@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Stregsystem.Core.DTO;
+using Stregsystem.Core.DTOs;
 
 namespace Stregsystem.Core
 {

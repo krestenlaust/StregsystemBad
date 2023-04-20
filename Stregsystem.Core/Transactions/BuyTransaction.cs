@@ -1,4 +1,4 @@
-﻿using Stregsystem.Core.DTO;
+﻿using Stregsystem.Core.DTOs;
 
 namespace Stregsystem.Core.Transactions
 {
@@ -6,7 +6,7 @@ namespace Stregsystem.Core.Transactions
     {
         public Product Product { get; }
 
-        public BuyTransaction(int ID, User user, DateTime timestamp, decimal amount) : base(ID, user, timestamp, amount)
+        public BuyTransaction(int ID, User user, decimal amount) : base(ID, user, amount)
         {
         }
     }
