@@ -26,11 +26,18 @@ namespace Stregsystem.Core.DataProviders
             using var fs = File.OpenRead(csvPath);
             // Note: Streamreader as opposed to the easier File.ReadAllLines, to be able to handle larger files.
             var sr = new StreamReader(fs);
+            bool columnHeaderLineSkipped = false;
 
             while (!sr.EndOfStream)
             {
                 // Can't be null when sr.EndofStream isn't null.
                 string line = sr.ReadLine()!;
+
+                if (!columnHeaderLineSkipped)
+                {
+                    columnHeaderLineSkipped = true;
+                    continue;
+                }
 
                 // id (int); name (string); price (decimal); active (bool); deactivate_date (datetime)
                 // example:
