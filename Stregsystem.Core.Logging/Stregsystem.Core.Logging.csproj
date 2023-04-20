@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Stregsystem.Core.Logging\Stregsystem.Core.Logging.csproj" />
-  </ItemGroup>
-
 </Project>
