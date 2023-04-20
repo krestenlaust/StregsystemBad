@@ -1,11 +1,10 @@
-﻿namespace Stregsystem.Core.Logging
+﻿namespace Stregsystem.Core.Logging;
+
+/// <summary>
+/// Provides logging capabilities.
+/// </summary>
+public interface ILogger
 {
-    /// <summary>
-    /// Provides logging capabilities.
-    /// </summary>
-    public interface ILogger
-    {
-        void Log(string msg);
-        void Close();
-    }
+    void Log(string msg);
+    void Close();
 }

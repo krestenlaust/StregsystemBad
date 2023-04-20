@@ -1,25 +1,24 @@
-﻿namespace Stregsystem.Core.Logging.Loggers
+﻿namespace Stregsystem.Core.Logging.Loggers;
+
+public class FileLogger : ILogger
 {
-    public class FileLogger : ILogger
+    readonly FileStream fs;
+    readonly StreamWriter sw;
+
+    public FileLogger(string filepath)
     {
-        readonly FileStream fs;
-        readonly StreamWriter sw;
+        fs = File.OpenWrite(filepath);
+        sw = new StreamWriter(fs);
+    }
 
-        public FileLogger(string filepath)
-        {
-            fs = File.OpenWrite(filepath);
-            sw = new StreamWriter(fs);
-        }
+    public void Close()
+    {
+        sw.Close();
+    }
 
-        public void Close()
-        {
-            sw.Close();
-        }
-
-        public void Log(string msg)
-        {
-            sw.WriteLine(msg);
-            sw.Flush();
-        }
+    public void Log(string msg)
+    {
+        sw.WriteLine(msg);
+        sw.Flush();
     }
 }

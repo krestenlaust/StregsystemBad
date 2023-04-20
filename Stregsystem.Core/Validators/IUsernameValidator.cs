@@ -1,7 +1,6 @@
-﻿namespace Stregsystem.Core.Validator
+﻿namespace Stregsystem.Core.Validator;
+
+public interface IUsernameValidator
 {
-    public interface IUsernameValidator
-    {
-        public bool IsUsernameValid(string username);
-    }
+    public bool IsUsernameValid(string username);
 }
