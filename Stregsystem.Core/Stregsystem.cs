@@ -2,7 +2,10 @@
 using Stregsystem.Core.DTOs;
 using Stregsystem.Core.DataProviders;
 using Stregsystem.Core.Validator;
+using Stregsystem.Core.Logging;
+using Stregsystem.Core.Logging.Loggers;
 
+#nullable enable
 namespace Stregsystem.Core
 {
     /// <summary>
@@ -14,12 +17,14 @@ namespace Stregsystem.Core
         /// transactions are simply stored in memory as the assignment did not specify that they couldn't be ephemeral.
         /// </summary>
         readonly HashSet<Transaction> transactions = new HashSet<Transaction>();
+        readonly string logfilePath = "log.txt";
 
         readonly IUserDataProvider userDataProvider;
         readonly IProductDataProvider productDataProvider;
         readonly IEmailValidator emailValidator;
         readonly INameValidator nameValidator;
         readonly IUsernameValidator usernameValidator;
+        readonly ILogger logger;
 
         internal Stregsystem(IUserDataProvider userDataProvider, IProductDataProvider productDataProvider, IEmailValidator emailValidator, INameValidator nameValidator, IUsernameValidator usernameValidator)
         {
@@ -28,6 +33,10 @@ namespace Stregsystem.Core
             this.emailValidator = emailValidator;
             this.nameValidator = nameValidator;
             this.usernameValidator = usernameValidator;
+
+            // Note: Consider not doing IO in a constructor.
+            logger = new FileLogger(logfilePath);
+            logger.Log("Started Stregsystem");
         }
 
         IEnumerable<Product> IProductProvider.ActiveProducts => throw new NotImplementedException();
@@ -46,6 +55,7 @@ namespace Stregsystem.Core
         {
             transaction.Execute();
             transactions.Add(transaction);
+            logger.Log(transaction.ToString()!);
         }
 
         Product IProductProvider.GetProductByID(int ID)
