@@ -1,9 +1,20 @@
-﻿using Stregsystem.Core.DTO;
+﻿using Stregsystem.Core.DataProviders;
+using Stregsystem.Core.DTO;
 
 namespace Stregsystem.Core
 {
-    public class Stregsystem
+    /// <summary>
+    /// God object as specified by assignment. It does everything and nothing at once.
+    /// </summary>
+    public class Stregsystem : IUserProvider, IProductProvider, ITransactionProvider
     {
+        /// <summary>
+        /// transactions are simply stored in memory as the assignment did not specify that they couldn't be ephemeral.
+        /// </summary>
+        readonly HashSet<Transaction> transactions = new HashSet<Transaction>();
+
+        public IEnumerable<Product> ActiveProducts => throw new NotImplementedException();
+
         public void BuyProduct(User user, Product product)
         {
             throw new NotImplementedException();
@@ -16,15 +27,11 @@ namespace Stregsystem.Core
 
         void ExecuteTransaction(Transaction transaction)
         {
-            throw new NotImplementedException();
+            transaction.Execute();
+            transactions.Add(transaction);
         }
 
         public Product GetProductByID(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<User> GetUsers(Func<User, bool> predicate)
         {
             throw new NotImplementedException();
         }
@@ -40,7 +47,12 @@ namespace Stregsystem.Core
             throw new NotImplementedException();
         }
 
-        public IList<Product> ActiveProducts()
+        public User GetUsers(Func<User, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Transaction> GetTransactionsByUser(User user, int rows)
         {
             throw new NotImplementedException();
         }
