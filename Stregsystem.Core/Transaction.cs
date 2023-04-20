@@ -11,20 +11,19 @@ namespace Stregsystem.Core
     {
         public int ID { get; }
         public User User { get; }
-        public DateTime Timestamp { get; }
+        public DateTime Timestamp { get; private set; }
         public decimal Amount { get; }
 
-        public Transaction(int ID, User user, DateTime timestamp, decimal amount)
+        public Transaction(int ID, User user, decimal amount)
         {
             this.ID = ID;
             User = user;
-            Timestamp = timestamp;
             Amount = amount;
         }
 
         public void Execute()
         {
-            throw new NotImplementedException();
+            Timestamp = DateTime.Now;
         }
     }
 }
