@@ -1,9 +1,4 @@
 ﻿using Stregsystem.Core.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stregsystem.Core.Exceptions
 {
@@ -16,7 +11,8 @@ namespace Stregsystem.Core.Exceptions
         public User User { get; }
         public Product Product { get; }
 
-        public InsufficientCreditsException(User user, Product product) {
+        public InsufficientCreditsException(User user, Product product)
+        {
             this.User = user;
             this.Product = product;
         }

@@ -7,7 +7,7 @@ namespace Stregsystem.Core
         public int ID { get; }
         public User User { get; }
         public DateTime Timestamp { get; private set; }
-        
+
         /// <summary>
         /// Always non-negative value.
         /// </summary>
