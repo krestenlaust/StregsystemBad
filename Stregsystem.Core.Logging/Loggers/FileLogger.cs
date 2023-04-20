@@ -13,13 +13,13 @@
 
         public void Close()
         {
-            sw.Flush();
             sw.Close();
         }
 
         public void Log(string msg)
         {
             sw.WriteLine(msg);
+            sw.Flush();
         }
     }
 }
