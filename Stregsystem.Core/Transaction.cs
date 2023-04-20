@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Stregsystem.Core.DTOs;
+﻿using Stregsystem.Core.DTOs;
 
 namespace Stregsystem.Core
 {
@@ -12,6 +7,10 @@ namespace Stregsystem.Core
         public int ID { get; }
         public User User { get; }
         public DateTime Timestamp { get; private set; }
+        
+        /// <summary>
+        /// Always non-negative value.
+        /// </summary>
         public decimal Amount { get; }
 
         public Transaction(int ID, User user, decimal amount)
