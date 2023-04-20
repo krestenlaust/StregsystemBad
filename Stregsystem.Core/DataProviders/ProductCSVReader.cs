@@ -1,15 +1,19 @@
 ﻿using Stregsystem.Core.DTOs;
 using Stregsystem.Core.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace Stregsystem.Core.DataProviders
 {
     internal class ProductCSVReader : IProductDataProvider
     {
         readonly string csvPath;
+        readonly Regex htmlSanitizer;
 
         public ProductCSVReader(string csvPath)
         {
             this.csvPath = csvPath;
+            // Matches any xml-tag both closing and opening.
+            htmlSanitizer = new Regex("(<[\\/a-zA-Z0-9]*?>)");
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace Stregsystem.Core.DataProviders
 
                 // Parse and sanitize product name
                 string productName = columns[1].Trim('"');
-                // TODO: add regex to sanitize xml-tags.
+                productName = htmlSanitizer.Replace(productName, "");
 
                 // Parse product price
                 if (!decimal.TryParse(columns[2], out decimal productPrice))
