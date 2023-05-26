@@ -12,8 +12,9 @@ namespace Stregsystem.Core;
 
 /// <summary>
 /// God object as specified by assignment. It does everything at once.
+/// If it was up to me, I would divide each of the interfaces' responsibilities into individual classes.
 /// </summary>
-public class Stregsystem : IUserProvider, IProductProvider, ITransactionProvider
+public class Stregsystem : IStregsystem, IUserProvider, IProductProvider, ITransactionProvider
 {
     /// <summary>
     /// transactions are simply stored in memory as the assignment did not specify that they couldn't be ephemeral.
@@ -59,6 +60,12 @@ public class Stregsystem : IUserProvider, IProductProvider, ITransactionProvider
     /// Product active AND (product not seasonal OR product is in season)
     /// </summary>
     IEnumerable<Product> IProductProvider.ActiveProducts => products.Where(p => p.Active && (p is not SeasonalProduct || p is SeasonalProduct ps && (ps.SeasonStartDate < DateTime.Now || ps.SeasonEndDate > DateTime.Now)));
+
+    public IUserProvider UserProvider => this;
+
+    public IProductProvider ProductProvider => this;
+
+    public ITransactionProvider TransactionProvider => this;
 
     public void BuyProduct(User user, Product product)
     {
