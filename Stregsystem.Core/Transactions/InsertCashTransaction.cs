@@ -2,7 +2,7 @@
 
 namespace Stregsystem.Core.Transactions;
 
-internal class InsertCashTransaction : Transaction
+public class InsertCashTransaction : Transaction
 {
     public InsertCashTransaction(int ID, User user, decimal amount) : base(ID, user, amount)
     {

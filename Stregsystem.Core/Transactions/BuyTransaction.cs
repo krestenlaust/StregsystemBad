@@ -2,7 +2,7 @@
 
 namespace Stregsystem.Core.Transactions;
 
-internal class BuyTransaction : Transaction
+public class BuyTransaction : Transaction
 {
     public Product Product { get; }
 
