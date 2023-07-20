@@ -6,7 +6,7 @@ public class BuyTransaction : Transaction
 {
     public Product Product { get; }
 
-    public BuyTransaction(int ID, User user, decimal amount) : base(ID, user, amount)
+    public BuyTransaction(int ID, User user, int amountInOere) : base(ID, user, amountInOere)
     {
     }
 }

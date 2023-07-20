@@ -11,13 +11,13 @@ public abstract class Transaction
     /// <summary>
     /// Always non-negative value.
     /// </summary>
-    public decimal Amount { get; }
+    public int AmountOfOere { get; }
 
-    public Transaction(int ID, User user, decimal amount)
+    public Transaction(int ID, User user, int amountOfOere)
     {
         this.ID = ID;
         User = user;
-        Amount = amount;
+        AmountOfOere = amountOfOere;
     }
 
     public void Execute()
