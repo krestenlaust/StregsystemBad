@@ -14,7 +14,7 @@ namespace Stregsystem.Core;
 /// God object as specified by assignment. It does everything at once.
 /// If it was up to me, I would divide each of the interfaces' responsibilities into individual classes.
 /// </summary>
-public class Stregsystem : IStregsystem, IUserProvider, IProductProvider, ITransactionProvider
+public class Stregsystem : IStregsystem, IUserProvider, IProductProvider, ITransactionProvider, IBroker
 {
     /// <summary>
     /// transactions are simply stored in memory as the assignment did not specify that they couldn't be ephemeral.
@@ -55,6 +55,10 @@ public class Stregsystem : IStregsystem, IUserProvider, IProductProvider, ITrans
         logger.Log($"Finished loading {nameof(products)}");
     }
 
+    public delegate void UserBalanceNotification(User user, int amountOfOere);
+
+    public event UserBalanceNotification UserBalanceNotificationEvent;
+
     /// <summary>
     /// Returns product when the following condition is met:
     /// Product active AND (product not seasonal OR product is in season)
@@ -69,38 +73,40 @@ public class Stregsystem : IStregsystem, IUserProvider, IProductProvider, ITrans
 
     public void BuyProduct(User user, Product product)
     {
-        if (user.Balance < product.Price && !product.CanBuyOnCredit)
+        if (user.BalanceInOere < product.PriceInOere && !product.CanBuyOnCredit)
         {
             throw new InsufficientCreditsException(user, product);
         }
 
-        ExecuteTransaction(new BuyTransaction(transactions.Count, user, product.Price));
+        ExecuteTransaction(new BuyTransaction(transactions.Count, user, product.PriceInOere));
     }
 
-    public void AddCreditsToAccount(User user, decimal amount)
+    public void AddCreditsToAccount(User user, int amountOfOere)
     {
-        ExecuteTransaction(new InsertCashTransaction(transactions.Count, user, amount));
+        ExecuteTransaction(new InsertCashTransaction(transactions.Count, user, amountOfOere));
     }
 
     void ExecuteTransaction(Transaction transaction)
     {
-        decimal balanceChange = 0;
+        int balanceChangeInOere = 0;
         if (transaction is BuyTransaction)
         {
-            balanceChange -= transaction.Amount;
+            balanceChangeInOere -= transaction.AmountOfOere;
         }
         else if (transaction is InsertCashTransaction)
         {
-            balanceChange += transaction.Amount;
+            balanceChangeInOere += transaction.AmountOfOere;
         }
 
-        // Update User Balance:
-        transaction.User.Balance += balanceChange;
+        // Update User BalanceInOere:
+        transaction.User.BalanceInOere += balanceChangeInOere;
 
         transaction.Execute();
         transactions.Add(transaction);
         logger.Log(transaction.ToString()!);
     }
+
+    void IBroker.ExecuteTransaction(Transaction transaction) => this.ExecuteTransaction(transaction);
 
     Product IProductProvider.GetProductByID(int ID)
     {
